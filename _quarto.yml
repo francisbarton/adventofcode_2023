@@ -1,0 +1,38 @@
+project:
+  type: website
+  resources:
+    - fonts
+  preview:
+    port: 4321
+
+execute:
+  freeze: auto
+  
+website:
+  title: "Advent of Code"
+  #site-url: https://github.com
+  description: My solutions to Advent of Code
+  repo-url: https://github.com/EllaKaye/advent-of-code-website-template
+  navbar:
+    left:
+     - 2022.qmd
+     - 2023.qmd
+    right:
+      - icon: github
+        href: https://github.com/EllaKaye/advent-of-code-website-template
+  open-graph: true
+
+format:
+  html:
+    theme: 
+      light: [cosmo, custom-light.scss]
+      dark: custom-dark.scss
+    css: styles.css
+    code-block-border-left: true
+    smooth-scroll: true
+    link-external-newwindow: true
+
+editor: source
+
+
+
