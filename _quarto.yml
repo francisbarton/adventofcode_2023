@@ -9,17 +9,16 @@ execute:
   freeze: auto
   
 website:
-  title: "Advent of Code"
+  title: "Advent of Code 2023"
   #site-url: https://github.com
   description: My solutions to Advent of Code
-  repo-url: https://github.com/EllaKaye/advent-of-code-website-template
+  repo-url: https://francisbarton.github.io/adventofcode_2023/
   navbar:
     left:
-     - 2022.qmd
      - 2023.qmd
     right:
       - icon: github
-        href: https://github.com/EllaKaye/advent-of-code-website-template
+        href: https://github.com/francisbarton/adventofcode_2023
   open-graph: true
 
 format:
@@ -33,6 +32,3 @@ format:
     link-external-newwindow: true
 
 editor: source
-
-
-
