@@ -14,8 +14,6 @@ website:
   description: My solutions to Advent of Code
   repo-url: https://francisbarton.github.io/adventofcode_2023/
   navbar:
-    left:
-     - 2023.qmd
     right:
       - icon: github
         href: https://github.com/francisbarton/adventofcode_2023
