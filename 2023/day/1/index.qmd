@@ -2,20 +2,23 @@
 title: "2023: Day 1"
 date: 2023-12-1
 categories:
-  - TAG_1
-  - TAG_2
+  - map
+  - regex
+  - strings
+  - types
 draft: false
+jupyter: julia-1.9
 ---
 
 ## Setup
 
-[The original challenge](https://adventofcode.com/2023/day/1)
+["Trebuchet"](https://adventofcode.com/2023/day/1)
 
 ## Part 1
 
-```{r}
+```{julia}
 #| echo: false
-OK <- "2023" < 3000
+OK = 2023 < 3000
 # Will only evaluate next code block if an actual year has been substituted for the placeholder
 ```
 
@@ -28,7 +31,121 @@ input <- aoc_input_vector(1, 2023)
 head(input)
 ```
 
+
+For Part 1, I wrote a small function that I would later `map` over the list of input strings.
+
+The function first of all takes a string and `split`s it into single character strings.
+In Julia, I then needed to convert these to `Char` type, and discovered that this can be achieved with the function `only`.
+This will return the first part of a string as a character (as I understand it).
+When you have strings of length 1, this is equivalent to converting to a Char.
+
+Having now converted the string to a vector of `Char`s, I could then filter the vector by the `isdigit` test function.
+This left me with only the digits.
+I then used the `*` operator to stick together the first and last members of the digit vector, and used `parse` to convert this to an integer.
+
+
+```{julia test-function}
+
+
+test_input = [
+  "1abc2",
+  "pqr3stu8vwx",
+  "a1b2c3d4e5f",
+  "treb7uchet"
+];
+
+
+pull_digits = function(x)
+  d = filter(isdigit, map(only, split(x, "")))
+  n = d[1]*d[end]
+  parse(Int64, n)
+end;
+
+
+sum(map(pull_digits, test_input)); # 142
+
+
+```
+
+
+```{julia use-input}
+
+input = readlines("2023/day/1/input");
+sum(map(pull_digits, input))
+
+
+```
+
+
+
 ## Part 2
+
+
+Part 2 of today's puzzle required a much more complicated function to solve it.
+Well, _I_ required a more complicated function, anyway.
+
+Sometimes with AoC you can just make a small amendment to your part 1 approach and get your part 2 answer fairly easily. Not today.
+
+I realised that I needed a Dict to handle the lookup of number name to digit.
+This would be pretty equivalent to a named vector in R.
+
+Using the split and replace approach worked OK with the test input.
+BUT it didn't work with the actual input.
+
+I realised that only the first match was being replaced.
+If the string contained something like "fiveight" then the "five" would be replaced, and I would end up with "5ight".
+And the "eight" would no longer remain to be matched.
+In order to get the right answer, I needed to pull out each match individually.
+
+I discovered the `eachmatch()` function, which will pull out each match from the string.
+The next step in the process was to replace the number names with a digit string, but also keeping existing digits.
+To do this I used a ternary operator, a kind of terse version of if ... else.
+This looks like `test ? true : false`.
+
+I also learned about the `keys()` and `values()` functions for working with Dicts.
+
+
+
+```{julia}
+
+
+test_input2 = [
+  "two1nine",
+  "eightwothree",
+  "abcone2threexyz",
+  "xtwone3four",
+  "4nineeightseven2",
+  "zoneight234",
+  "7pqrstsixteen"
+];
+
+subs = Dict(
+  "one" => "1",
+  "two" => "2",
+  "three" => "3",
+  "four" => "4",
+  "five" => "5",
+  "six" => "6",
+  "seven" => "7",
+  "eight" => "8",
+  "nine" => "9"
+);
+
+
+
+pull_digits2 = function(x, subs)
+  filt = join([join(keys(subs), "|"), join(values(subs), "|")], "|")
+  ms = collect(eachmatch(Regex("$(filt)"), x, overlap = true))
+  ds = map(x -> x in keys(subs) ? subs[x] : x, map(x -> x.match, ms))
+  n = ds[1]*ds[end]
+  parse(Int64, n)
+end;
+
+# sum(map(x -> pull_digits2(x, subs), test_input2)); # 281
+sum(map(x -> pull_digits2(x, subs), input));
+
+
+```
 
 
 ##### Session info {.appendix}

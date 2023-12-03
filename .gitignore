@@ -9,3 +9,6 @@
 /.quarto/
 /_site/
 *.html
+*input
+*.ipynb
+*script.R
