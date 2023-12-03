@@ -10,7 +10,7 @@ test_input = [
 # Part 1 ------------------------------------------
 
 function split_to_dict(x)
-  s = split(x, " ")
+  s = split(x, " ") 
   s[2] => parse(Int, s[1])
 end;
 
