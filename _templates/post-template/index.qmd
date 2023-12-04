@@ -14,40 +14,35 @@ draft: false
 ## Part 1
 
 ```{julia}
-#| echo: false
-OK = YYYY < 3000
-# Will only evaluate next code block if an actual year has been substituted for the placeholder
-```
-
-
-
-
-```{julia}
 
 filepath = "YYYY/day/DD/input"
 
-if !isfile(filepath)
+# set this to true to try to get the input data if (eg) it failed before
+refresh_input = false 
 
+if !isfile(filepath) | refresh_input
   using HTTP
   function get_aoc_input(year::Int64, day::Int64)
     url_base = "https://adventofcode.com/"
     input_url = "$(url_base)$(year)/day/$(day)/input"
     r = HTTP.get(input_url, ["cookie" => "$(AOC_COOKIE)"])
-    if r.status == 200 String(r.body) else "" end
-  end;
+    if r.status == 200 string(r.body) else "Input read failed" end
+  end
 
-  input = split(get_aoc_input(YYYY, DD), "\n");
+  input = get_aoc_input(YYYY, DD);
 
-  # tidy up empty last line, if any
-  if input[end] == "" 
-    deleteat!(input, lastindex(input))
-  end;
+  open(filepath, "w") do file
+    write(file, input)
+  end
+end;
 
-  # write input to file
-  write(filepath, input)
+input = split(readlines(filepath), "\n");
+
+# tidy up empty last line, if any
+if input[end] == "" 
+  deleteat!(input, lastindex(input))
 end;
   
-input = readlines(filepath)
 
 ```
 
