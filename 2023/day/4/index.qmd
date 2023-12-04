@@ -7,6 +7,7 @@ categories:
   - constructors
   - recursion
 draft: false
+jupyter: julia-1.9
 ---
 
 ## Setup

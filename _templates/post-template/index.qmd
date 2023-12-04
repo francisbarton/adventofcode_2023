@@ -5,6 +5,7 @@ categories:
   - TAG_1
   - TAG_2
 draft: false
+jupyter: julia-1.9
 ---
 
 ## Setup
