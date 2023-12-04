@@ -10,13 +10,16 @@ test_input = (
 # Part 1 --------------------------------------------
 
 function split_card(x)
-  (y, x) = split(x, ": ")
+  (y, x) = split(x, ": ") # we can discard y
   x = split(x, " | ")
   x = map(x -> eachmatch(r"\d+", x), x)
   (l, r) = map(x -> map(x -> x.match, collect(x)), x)
   length(filter(x -> x in l, r))
 end;
 
+# originally part of a single split_card() function,
+# but when we get to part 2 we just need the split_card()
+# without the points calculation, so I restructured things.
 function card_points(x)
   m = split_card(x)
   m > 0 ? 2^(m-1) : 0
@@ -33,16 +36,19 @@ sum(map(card_points, input))
 
 # Part 2 --------------------------------------------
 
+# ooh fancypants
 mutable struct Card
   matches::Int
   copies::Int
 end;
 
+# hmm this is simpler than I thought it would be
 function create_card(x, y = 1)
   Card(x, y)
 end;
 
 
+# I do love a recursive function
 function update_cards(cards, n = 1)
   if n == length(cards) return(cards) end
   (copies, matches) = (cards[n].copies, cards[n].matches)
@@ -50,12 +56,12 @@ function update_cards(cards, n = 1)
   update_cards(cards, n + 1)
 end;
 
-# test input
+# with test input:
 cards = map(create_card, map(split_card, test_input));
 update_cards(cards);
 sum(map(x -> x.copies, cards)); # 30
 
-# real input
+# with real input:
 cards_full = map(create_card, map(split_card, input));
-update_cards(cards_full);
+update_cards(cards_full);   # #chefskiss
 sum(map(x -> x.copies, cards_full))

@@ -1,0 +1,91 @@
+---
+title: "2023: Day 4"
+date: "2023-12-04"
+categories:
+  - julia
+  - struct
+  - constructors
+  - recursion
+draft: false
+---
+
+## Setup
+
+["Scratchcards"](https://adventofcode.com/2023/day/4)
+
+## Part 1
+
+
+```{julia}
+
+filepath = "2023/day/4/input"
+
+# set this to true to try to get the input data if (eg) it failed before
+refresh_input = false 
+
+if !isfile(filepath) | refresh_input
+  using HTTP
+  function get_aoc_input(year::Int64, day::Int64)
+    url_base = "https://adventofcode.com/"
+    input_url = "$(url_base)$(year)/day/$(day)/input"
+    r = HTTP.get(input_url, ["cookie" => "$(AOC_COOKIE)"])
+    if r.status == 200 string(r.body) else "Input read failed" end
+  end;
+
+  input = get_aoc_input(2023, 4);
+
+  open(filepath, "w") do file
+    write(file, input)
+  end
+end;
+
+input = split(readlines(filepath), "\n");
+
+# tidy up empty last line, if any
+if input[end] == "" 
+  deleteat!(input, lastindex(input))
+end;
+
+```
+
+
+_Some initial thinking about how to approach part 1_
+
+## Part 2
+
+
+Deciding to try using a `struct` (which I only really learned about last night from watching a Julia Academy video).
+
+I guessed that the count problem could be addressed by using a recursive function that amended the list (vector? array?) of cards each time.
+
+Still allergic to `for` loops!
+
+I was really proud of this one, how neat it was in the end.
+Especially using `struct`s and the associated constructor function so smoothly, and getting the recursion right after not too many trials and errors.
+
+
+##### Session info {.appendix}
+
+<details><summary>Toggle</summary>
+
+```{r}
+#| echo: false
+library(sessioninfo)
+# save the session info as an object
+pkg_session <- session_info(pkgs = "attached")
+
+# get the quarto version
+quarto_version <- system("quarto --version", intern = TRUE)
+
+# inject the quarto info
+pkg_session$platform$quarto <- paste(
+  system("quarto --version", intern = TRUE), 
+  "@", 
+  quarto::quarto_path()
+  )
+
+# print it out
+pkg_session
+```
+
+</details>
