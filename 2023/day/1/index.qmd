@@ -70,7 +70,7 @@ sum(map(pull_digits, test_input)); # 142
 
 ```{julia use-input}
 
-input = readlines("2023/day/1/input");
+input = readlines("input");
 sum(map(pull_digits, input))
 
 
