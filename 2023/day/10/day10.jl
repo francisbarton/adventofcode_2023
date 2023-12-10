@@ -57,8 +57,8 @@ input_join = join(input, "");
 # inspection of the grid
 w = length(input)   # grid width and height
 # w = convert(Int64, sqrt(length(input_join))); # grid width and height
-# ceil(curr_s_val / w); # S is on row 32
-# 4369 % w; # S is in col 29
+# ceil(curr_s_val / w); # S is on row 32 for me
+# curr_s_val % w; # S is in col 29 for me
 
 # look at possible first move options
 # input[31][28:30]; # JLJ  animal can't go north
@@ -149,10 +149,10 @@ x = map(x -> x % w == 0 ? w : x % w, route_ints);
 y = map(x -> convert(Int64, ceil(x / w)), route_ints);
 
 # via Shoelace
-route_area = convert(Int, shoelace_area(x, y)); # 7421
+route_area = convert(Int, shoelace_area(x, y));
 
 # Pick's theorem 
 # https://en.wikipedia.org/wiki/Pick's_theorem
 # A = i + (b/2) -1
 # route_area = i + (route_len / 2) - 1
-route_area + 1 - ((route_len - 1) / 2) # = i
+route_area + 1 - (route_len / 2) # = i (the answer)
